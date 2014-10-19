@@ -12,6 +12,7 @@
 ## Requirements
 
  * PHP 5.3+
+ * Guzzle ~5.0 (PHP 5.4+)
 
 ## Installation
 
