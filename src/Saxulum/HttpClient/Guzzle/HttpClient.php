@@ -28,6 +28,26 @@ class HttpClient implements HttpInterface
      */
     public function request(Request $request)
     {
+        $guzzleRequest = $this->prepareRequest($request);
+
+        /** @var GuzzleResponse $guzzleResponse */
+        $guzzleResponse = $this->client->send($guzzleRequest);
+
+        return new Response(
+            $guzzleResponse->getProtocolVersion(),
+            (int) $guzzleResponse->getStatusCode(),
+            $guzzleResponse->getReasonPhrase(),
+            HeaderConverter::convertComplexAssociativeToFlatAssociative($guzzleResponse->getHeaders()),
+            (string) $guzzleResponse->getBody()
+        );
+    }
+
+    /**
+     * @param  Request       $request
+     * @return GuzzleRequest
+     */
+    protected function prepareRequest(Request $request)
+    {
         $guzzleRequest = $this->client->createRequest(
             $request->getMethod(),
             (string) $request->getUrl(),
@@ -39,15 +59,6 @@ class HttpClient implements HttpInterface
         $guzzleRequest->setHeaders($request->getHeaders());
         $guzzleRequest->setBody($request->getContent());
 
-        /** @var GuzzleResponse $guzzleResponse */
-        $guzzleResponse = $this->client->send($guzzleRequest);
-
-        return new Response(
-            $guzzleResponse->getProtocolVersion(),
-            (int) $guzzleResponse->getStatusCode(),
-            $guzzleResponse->getReasonPhrase(),
-            $guzzleResponse->getHeaders(),
-            (string) $guzzleResponse->getBody()
-        );
+        return $guzzleRequest;
     }
 }
