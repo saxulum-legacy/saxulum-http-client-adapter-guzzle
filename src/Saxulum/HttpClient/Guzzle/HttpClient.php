@@ -28,15 +28,16 @@ class HttpClient implements HttpInterface
      */
     public function request(Request $request)
     {
-        $guzzleRequest = new GuzzleRequest(
+        $guzzleRequest = $this->client->createRequest(
             $request->getMethod(),
             (string) $request->getUrl(),
-            HeaderConverter::convertHeaders($request->getHeaders()),
-            $request->getContent(),
             array(
-                'protocol_version' => $request->getProtocolVersion(),
+                'version' => $request->getProtocolVersion(),
             )
         );
+
+        $guzzleRequest->setHeaders($request->getHeaders());
+        $guzzleRequest->setBody($request->getContent());
 
         /** @var GuzzleResponse $guzzleResponse */
         $guzzleResponse = $this->client->send($guzzleRequest);

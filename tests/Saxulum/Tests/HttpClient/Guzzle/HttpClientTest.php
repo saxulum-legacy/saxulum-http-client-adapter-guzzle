@@ -20,6 +20,7 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
             )
         ));
 
+        $this->assertEquals('1.1', $response->getProtocolVersion());
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('OK', $response->getStatusMessage());
         $this->assertEquals('text/html; charset=UTF-8', $response->getHeader('Content-Type'));
