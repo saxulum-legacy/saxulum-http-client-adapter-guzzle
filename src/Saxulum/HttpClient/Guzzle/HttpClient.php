@@ -6,11 +6,11 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Message\Request as GuzzleRequest;
 use GuzzleHttp\Message\Response as GuzzleResponse;
 use Saxulum\HttpClient\HeaderConverter;
-use Saxulum\HttpClient\HttpInterface;
+use Saxulum\HttpClient\HttpClientInterface;
 use Saxulum\HttpClient\Request;
 use Saxulum\HttpClient\Response;
 
-class HttpClient implements HttpInterface
+class HttpClient implements HttpClientInterface
 {
     /**
      * @var Client
